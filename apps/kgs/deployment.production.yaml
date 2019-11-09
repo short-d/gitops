@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: staging
+  namespace: production
   name: kgs-1
   labels:
     app: kgs
@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: kgs
-          image: byliuyang/kgs-staging:latest
+          image: byliuyang/kgs:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -75,7 +75,7 @@ spec:
             - name: SERVICE_NAME
               value: kgs-1
             - name: SERVICE_EMAIL
-              value: kgs@staging.short-d.com
+              value: kgs@short-d.com
         - name: db
           image: postgres:12
           imagePullPolicy: IfNotPresent
