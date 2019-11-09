@@ -11,5 +11,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/k8s/volumes/kgs/1/staging"
+    path: "/k8s/volumes/kgs/1/production"
 
