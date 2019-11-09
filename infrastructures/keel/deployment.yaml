@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keel
+  namespace: "keel"
+  labels:
+    app: keel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keel
+  template:
+    metadata:
+      labels:
+        app: keel
+    spec:
+      serviceAccountName: keel
+      containers:
+        - name: keel
+          # Note that we use appVersion to get images tag.
+          image: "keelhq/keel:latest"
+          imagePullPolicy: Always
+          command: ["/bin/keel"]
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            # Enable GCR with pub/sub support
+            - name: PROJECT_ID
+              value: ""
+            - name: PUBSUB
+              value: "" # Set to '1' or 'true' to enable GCR pubsub
+            # Basic auth (to enable UI/API)
+            - name: BASIC_AUTH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: keel
+                  key: user
+            - name: BASIC_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keel
+                  key: password
+            - name: AUTHENTICATED_WEBHOOKS
+              value: "false"
+            # Helm configuration
+
+            # Enable AWS ECR
+            - name: AWS_ACCESS_KEY_ID
+              value: ""
+            - name: AWS_SECRET_ACCESS_KEY
+              value: ""
+            - name: AWS_REGION
+              value: ""
+            # Enable webhook endpoint
+            - name: WEBHOOK_ENDPOINT
+              value: ""
+            # Enable mattermost endpoint
+            - name: MATTERMOST_ENDPOINT
+              value: ""
+            - name: SLACK_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: keel
+                  key: slack-token
+            - name: SLACK_CHANNELS
+              value: "deploy"
+            - name: SLACK_APPROVALS_CHANNEL
+              value: "deploy"
+            - name: SLACK_BOT_NAME
+              value: "keel"
+            # Enable hipchat approvials and notification
+            - name: HIPCHAT_TOKEN
+              value: ""
+            - name: HIPCHAT_CHANNELS
+              value: ""
+            - name: HIPCHAT_APPROVALS_CHANNEL
+              value: ""
+            - name: HIPCHAT_APPROVALS_BOT_NAME
+              value: ""
+            - name: HIPCHAT_APPROVALS_USER_NAME
+              value: ""
+            - name: HIPCHAT_APPROVALS_PASSWORT
+              value: ""
+            - name: NOTIFICATION_LEVEL
+              value: "info"
+            # Enable insecure registries
+            - name: INSECURE_REGISTRY
+              value: "false"
+          ports:
+            - containerPort: 9300
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9300
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+
