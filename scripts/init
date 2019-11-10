@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-kubectl delete -R -f environments
-kubectl delete -R -f volumes
-
 kubectl apply -R -f environments
 kubectl apply -R -f volumes
 scripts/secrets
