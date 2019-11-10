@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/k8s/volumes/kgs/1/production"
+    path: "/k8s/volumes/kgs-1/production"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
