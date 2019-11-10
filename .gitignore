@@ -1,2 +1,8 @@
+# Jetbrains IDEs
+.idea
+
 # Cluster secrets
-secrets
+/secrets
+
+# Synchronization scrtipt
+/scripts/sync
