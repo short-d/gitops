@@ -1,7 +1,39 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kgs-1-staging
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 200Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/k8s/volumes/kgs/1/staging"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kgs-1-db-data
+  namespace: staging
+  labels:
+    volume: db-data
+    app: kgs
+    id: "1"
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200M
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: production
+  namespace: staging
   name: kgs-1
   labels:
     app: kgs
@@ -20,7 +52,7 @@ spec:
     spec:
       containers:
         - name: kgs
-          image: byliuyang/kgs:latest
+          image: byliuyang/kgs-staging:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -75,7 +107,7 @@ spec:
             - name: SERVICE_NAME
               value: kgs-1
             - name: SERVICE_EMAIL
-              value: kgs@short-d.com
+              value: kgs@staging.short-d.com
         - name: db
           image: postgres:12
           imagePullPolicy: IfNotPresent
@@ -114,4 +146,38 @@ spec:
           persistentVolumeClaim:
             claimName: kgs-1-db-data
       restartPolicy: Always
-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: staging
+  name: kgs-1
+spec:
+  selector:
+    app: kgs
+    id: "1"
+  ports:
+    - name: grpc
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: staging
+  name: kgs1
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
+spec:
+  tls:
+    - hosts:
+        - kgs1-staging.short-d.com
+      secretName: short-d.com-tls
+  rules:
+    - host: kgs1-staging.short-d.com
+      http:
+        paths:
+          - backend:
+              serviceName: kgs-1
+              servicePort: grpc
