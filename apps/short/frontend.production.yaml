@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: production
+  name: short-frontend
+  labels:
+    app: short
+    tier: frontend
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: short-frontend
+      labels:
+        app: short
+        tier: frontend
+    spec:
+      containers:
+        - name: short-frontend
+          image: byliuyang/short-frontend
+          imagePullPolicy: Always
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: short
+      tier: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: production
+  name: short-frontend
+spec:
+  selector:
+    app: short
+    tier: frontend
+  ports:
+    - port: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: production
+  name: short-frontend
+spec:
+  tls:
+    - hosts:
+        - prod.short-d.com
+      secretName: short-d.com-tls
+  rules:
+    - host: prod.short-d.com
+      http:
+        paths:
+          - backend:
+              serviceName: short-frontend
+              servicePort: 80
