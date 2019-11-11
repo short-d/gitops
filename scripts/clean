@@ -2,3 +2,4 @@
 
 kubectl delete -R -f environments
 kubectl delete -R -f volumes
+rm -rf /k8s/volumes
