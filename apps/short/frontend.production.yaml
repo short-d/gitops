@@ -47,10 +47,17 @@ metadata:
 spec:
   tls:
     - hosts:
-        - prod.short-d.com
+        - short-d.com
+        - www.short-d.com
       secretName: short-d.com-tls
   rules:
-    - host: prod.short-d.com
+    - host: short-d.com
+      http:
+        paths:
+          - backend:
+              serviceName: short-frontend
+              servicePort: 80
+    - host: www.short-d.com
       http:
         paths:
           - backend:

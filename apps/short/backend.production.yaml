@@ -101,14 +101,14 @@ spec:
                   name: short
                   key: facebook-client-secret
             - name: FACEBOOK_REDIRECT_URI
-              value: https://api-prod.short-d.com/oauth/facebook/sign-in/callback
+              value: https://api.short-d.com/oauth/facebook/sign-in/callback
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: short
                   key: jwt-secret
             - name: WEB_FRONTEND_URL
-              value: https://prod.short-d.com
+              value: https://short-d.com
             - name: KEY_GEN_BUFFER_SIZE
               value: "10"
             - name: KEY_GEN_HOSTNAME
@@ -171,17 +171,17 @@ metadata:
 spec:
   tls:
     - hosts:
-        - api-prod.short-d.com
-        - gql-prod.short-d.com
+        - api.short-d.com
+        - gql.short-d.com
       secretName: short-d.com-tls
   rules:
-    - host: api-prod.short-d.com
+    - host: api.short-d.com
       http:
         paths:
           - backend:
               serviceName: short-backend
               servicePort: http
-    - host: gql-prod.short-d.com
+    - host: gql.short-d.com
       http:
         paths:
           - backend:
