@@ -25,6 +25,8 @@ metadata:
     id: "1"
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: kgs
