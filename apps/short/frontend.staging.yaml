@@ -10,6 +10,7 @@ spec:
   replicas: 2
   strategy:
     type: RollingUpdate
+  revisionHistoryLimit: 3
   template:
     metadata:
       name: short-frontend

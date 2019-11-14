@@ -10,6 +10,7 @@ spec:
       name: flux
   strategy:
     type: Recreate
+  revisionHistoryLimit: 3
   template:
     metadata:
       annotations:

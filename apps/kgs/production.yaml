@@ -27,6 +27,7 @@ spec:
   replicas: 1
   strategy:
     type: RollingUpdate
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: kgs
