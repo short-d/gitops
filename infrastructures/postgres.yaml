@@ -31,6 +31,7 @@ spec:
       containers:
         - name: postgres
           image: postgres:12.1
+          args: ["-c", "listen_addresses='*'"]
           ports:
             - containerPort: 5432
           env:
