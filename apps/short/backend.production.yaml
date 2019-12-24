@@ -103,6 +103,18 @@ spec:
                   key: facebook-client-secret
             - name: FACEBOOK_REDIRECT_URI
               value: https://api.short-d.com/oauth/facebook/sign-in/callback
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: short
+                  key: google-client-id
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: short
+                  key: google-client-secret
+            - name: GOOGLE_REDIRECT_URI
+              value: https://api.short-d.com/oauth/google/sign-in/callback
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
