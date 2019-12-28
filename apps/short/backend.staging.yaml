@@ -58,9 +58,15 @@ spec:
             - app/adapter/migration
           env:
             - name: DB_HOST
-              value: localhost
+              valueFrom:
+                secretKeyRef:
+                  name: short-db
+                  key: host
             - name: DB_PORT
-              value: "5432"
+              valueFrom:
+                secretKeyRef:
+                  name: short-db
+                  key: port
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
@@ -128,34 +134,6 @@ spec:
               value: kgs-1
             - name: KEY_GEN_PORT
               value: "8080"
-        - name: db
-          image: postgres:12
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 5432
-          volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: short-db-data
-          env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: short-db
-                  key: user
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: short-db
-                  key: password
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: short-db
-                  key: name
-      volumes:
-        - name: short-db-data
-          persistentVolumeClaim:
-            claimName: short-db-data
       restartPolicy: Always
 ---
 apiVersion: v1
