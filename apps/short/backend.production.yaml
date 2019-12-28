@@ -50,7 +50,7 @@ spec:
             - -s
             - -t
             - "0"
-            - localhost:5432
+            - $(DB_HOST):$(DB_PORT)
             - --
             - ./build/app
             - start
