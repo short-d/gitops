@@ -1,20 +1,3 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: kgs-1-db-data
-  namespace: staging
-  labels:
-    volume: db-data
-    app: kgs
-    id: "1"
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 800M
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -53,7 +36,7 @@ spec:
             - -s
             - -t
             - "0"
-            - localhost:5432
+            - $(DB_HOST):$(DB_PORT)
             - --
             - ./build/app
             - start
@@ -61,9 +44,15 @@ spec:
             - app/adapter/db/migration
           env:
             - name: DB_HOST
-              value: localhost
+              valueFrom:
+                secretKeyRef:
+                  name: kgs-1-db
+                  key: host
             - name: DB_PORT
-              value: "5432"
+              valueFrom:
+                secretKeyRef:
+                  name: kgs-1-db
+                  key: port
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
@@ -96,31 +85,6 @@ spec:
               value: kgs-1
             - name: SERVICE_EMAIL
               value: kgs@staging.short-d.com
-        - name: db
-          image: postgres:12
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 5432
-          volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: kgs-1-db-data
-
-          env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: kgs-1-db
-                  key: user
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: kgs-1-db
-                  key: password
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: kgs-1-db
-                  key: name
       volumes:
         - name: certs
           secret:
@@ -130,9 +94,6 @@ spec:
                 path: tls.crt
               - key: tls.key
                 path: tls.key
-        - name: kgs-1-db-data
-          persistentVolumeClaim:
-            claimName: kgs-1-db-data
       restartPolicy: Always
 ---
 apiVersion: v1
