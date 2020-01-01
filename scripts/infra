@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+kubectl create secret tls short-d.com-tls \
+  --key /etc/letsencrypt/live/short-d.com/privkey.pem \
+  --cert /etc/letsencrypt/live/short-d.com/fullchain.pem -n kube-system
+
+kubectl create secret tls short-d.com-tls \
+  --key /etc/letsencrypt/live/short-d.com/privkey.pem \
+  --cert /etc/letsencrypt/live/short-d.com/fullchain.pem -n keel
