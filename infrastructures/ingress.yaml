@@ -284,4 +284,4 @@ spec:
       port: 443
       targetPort: https
   externalIPs:
-    - 192.241.207.226
+    - 192.241.194.78
