@@ -38,7 +38,7 @@ spec:
             - ./build/app
             - start
             - --migration
-            - app/adapter/migration
+            - app/adapter/db/migration
           env:
             - name: DB_HOST
               valueFrom:
