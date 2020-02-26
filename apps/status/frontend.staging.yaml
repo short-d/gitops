@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: status-frontend
-          image: byliuyang/status-frontend-staging
+          image: shortorg/status-frontend-staging
           imagePullPolicy: Always
       restartPolicy: Always
   selector:
