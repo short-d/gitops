@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: staging
+  name: status-frontend
+  labels:
+    app: status
+    tier: frontend
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      name: status-frontend
+      labels:
+        app: status
+        tier: frontend
+    spec:
+      containers:
+        - name: status-frontend
+          image: byliuyang/status-frontend-staging
+          imagePullPolicy: Always
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: status
+      tier: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: staging
+  name: status-frontend
+spec:
+  selector:
+    app: status
+    tier: frontend
+  ports:
+    - port: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: staging
+  name: status-frontend
+spec:
+  tls:
+    - hosts:
+        - status-staging.short-d.com
+      secretName: short-d.com-tls
+  rules:
+    - host: status-staging.short-d.com
+      http:
+        paths:
+          - backend:
+              serviceName: status-frontend
+              servicePort: 80
