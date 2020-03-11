@@ -1,9 +1,19 @@
 #!/usr/bin/env bash
 
+certbot-auto certonly \
+  --server https://acme-v02.api.letsencrypt.org/directory \
+  --preferred-challenges dns \
+  -d '*.short-d.com' \
+  -d 'short-d.com' \
+  --dns-digitalocean \
+  --dns-digitalocean-credentials ~/.secrets/certbot/digitalocean.ini
+
+kubectl delete secret tls short-d.com-tls -n staging
 kubectl create secret tls short-d.com-tls \
   --key /etc/letsencrypt/live/short-d.com/privkey.pem \
   --cert /etc/letsencrypt/live/short-d.com/fullchain.pem -n staging
 
+kubectl delete secret tls short-d.com-tls -n production
 kubectl create secret tls short-d.com-tls \
   --key /etc/letsencrypt/live/short-d.com/privkey.pem \
   --cert /etc/letsencrypt/live/short-d.com/fullchain.pem -n production
