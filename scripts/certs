@@ -8,12 +8,11 @@ certbot-auto certonly \
   --dns-digitalocean \
   --dns-digitalocean-credentials ~/.secrets/certbot/digitalocean.ini
 
-kubectl delete secret tls short-d.com-tls -n staging
-kubectl create secret tls short-d.com-tls \
-  --key /etc/letsencrypt/live/short-d.com/privkey.pem \
-  --cert /etc/letsencrypt/live/short-d.com/fullchain.pem -n staging
+declare -a namespaces=("staging" "production" "keel" "kube-system")
 
-kubectl delete secret tls short-d.com-tls -n production
-kubectl create secret tls short-d.com-tls \
-  --key /etc/letsencrypt/live/short-d.com/privkey.pem \
-  --cert /etc/letsencrypt/live/short-d.com/fullchain.pem -n production
+for namespace in "${namespaces[@]}"; do
+    kubectl delete secret tls short-d.com-tls -n "$namespace"
+    kubectl create secret tls short-d.com-tls \
+      --key /etc/letsencrypt/live/short-d.com/privkey.pem \
+      --cert /etc/letsencrypt/live/short-d.com/fullchain.pem -n "$namespace"
+done
