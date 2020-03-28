@@ -8,7 +8,7 @@ certbot-auto certonly \
   --dns-digitalocean \
   --dns-digitalocean-credentials ~/.secrets/certbot/digitalocean.ini
 
-declare -a namespaces=("staging" "production" "keel" "kube-system")
+declare -a namespaces=("testing" "staging" "production" "keel" "kube-system")
 
 for namespace in "${namespaces[@]}"; do
     kubectl delete secret tls short-d.com-tls -n "$namespace"

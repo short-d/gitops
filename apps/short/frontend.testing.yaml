@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: testing
+  name: short-frontend
+  labels:
+    app: short
+    tier: frontend
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      name: short-frontend
+      labels:
+        app: short
+        tier: frontend
+    spec:
+      containers:
+        - name: short-frontend
+          image: byliuyang/short-frontend-testing
+          imagePullPolicy: Always
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: short
+      tier: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: testing
+  name: short-frontend
+spec:
+  selector:
+    app: short
+    tier: frontend
+  ports:
+    - port: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: testing
+  name: short-frontend
+spec:
+  tls:
+    - hosts:
+        - testing.short-d.com
+      secretName: short-d.com-tls
+  rules:
+    - host: testing.short-d.com
+      http:
+        paths:
+          - backend:
+              serviceName: short-frontend
+              servicePort: 80

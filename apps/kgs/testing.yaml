@@ -1,0 +1,132 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: testing
+  name: kgs-1
+  labels:
+    app: kgs
+    id: "1"
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: kgs
+      id: "1"
+  template:
+    metadata:
+      labels:
+        app: kgs
+        id: "1"
+    spec:
+      containers:
+        - name: kgs
+          image: byliuyang/kgs-testing:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: certs
+              mountPath: "/etc/certs"
+              readOnly: true
+          args:
+            - ./scripts/wait-for-it
+            - -s
+            - -t
+            - "0"
+            - $(DB_HOST):$(DB_PORT)
+            - --
+            - ./build/app
+            - start
+            - --migration
+            - app/adapter/db/migration
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: kgs-1-db
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: kgs-1-db
+                  key: port
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: kgs-1-db
+                  key: user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kgs-1-db
+                  key: password
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: kgs-1-db
+                  key: name
+            - name: ENABLE_ENCRYPTION
+              value: "true"
+            - name: CERT_FILE_PATH
+              value: /etc/certs/tls.crt
+            - name: KEY_FILE_PATH
+              value: /etc/certs/tls.key
+            - name: GRPC_API_PORT
+              value: "8080"
+            - name: SEND_GRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: send-grid
+                  key: api-key
+            - name: SERVICE_NAME
+              value: kgs-1
+            - name: SERVICE_EMAIL
+              value: kgs@testing.short-d.com
+      volumes:
+        - name: certs
+          secret:
+            secretName: short-d.com-tls
+            items:
+              - key: tls.crt
+                path: tls.crt
+              - key: tls.key
+                path: tls.key
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: testing
+  name: kgs-1
+spec:
+  selector:
+    app: kgs
+    id: "1"
+  ports:
+    - name: grpc
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: testing
+  name: kgs1
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
+spec:
+  tls:
+    - hosts:
+        - kgs1-testing.short-d.com
+      secretName: short-d.com-tls
+  rules:
+    - host: kgs1-testing.short-d.com
+      http:
+        paths:
+          - backend:
+              serviceName: kgs-1
+              servicePort: grpc
