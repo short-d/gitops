@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: short-backend
-          image: byliuyang/short-backend-testing
+          image: shortorg/short-backend-testing
           imagePullPolicy: Always
           ports:
             - containerPort: 80

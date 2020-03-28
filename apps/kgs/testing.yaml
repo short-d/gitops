@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: kgs
-          image: byliuyang/kgs-testing:latest
+          image: shortorg/kgs-testing:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

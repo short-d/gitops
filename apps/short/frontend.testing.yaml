@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: short-frontend
-          image: byliuyang/short-frontend-testing
+          image: shortorg/short-frontend-testing
           imagePullPolicy: Always
       restartPolicy: Always
   selector:
