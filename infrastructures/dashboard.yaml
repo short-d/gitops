@@ -22,8 +22,6 @@ kind: Ingress
 metadata:
   namespace: kube-system
   name: kubernetes-dashboard
-  annotations:
-    kubernetes.io/ingress.class: traefik
 spec:
   tls:
     - hosts:
