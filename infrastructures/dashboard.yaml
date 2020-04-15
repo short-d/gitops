@@ -23,7 +23,7 @@ metadata:
   namespace: kube-system
   name: kubernetes-dashboard
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    kubernetes.io/ingress.class: traefik
 spec:
   tls:
     - hosts:
