@@ -70,7 +70,6 @@ spec:
       protocol: TCP
       port: 7400
       targetPort: 5432
-  externalTrafficPolicy: Local
-  type: LoadBalancer
+  type: NodePort
   externalIPs:
     - 192.241.194.78
