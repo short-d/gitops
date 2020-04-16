@@ -76,11 +76,12 @@ spec:
         - image: traefik:v1.7.24
           name: traefik-ingress
           ports:
+            - name: http
+              containerPort: 80
             - name: https
               containerPort: 443
             - name: admin
               containerPort: 8080
-              hostPort: 8080
           securityContext:
             capabilities:
               drop:
@@ -106,10 +107,14 @@ spec:
   selector:
     app: traefik-ingress
   ports:
+    - port: 80
+      name: http
     - port: 443
-      name: web
+      name: https
     - port: 8080
       name: admin
+  externalIPs:
+    - 192.241.194.78
 ---
 apiVersion: v1
 kind: Service
