@@ -104,7 +104,7 @@ metadata:
   namespace: ingress
 spec:
   externalTrafficPolicy: Local
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: traefik-ingress
   ports:
