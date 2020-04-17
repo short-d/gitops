@@ -150,6 +150,8 @@ spec:
       port: 80
     - name: graphql
       port: 8080
+  type: LoadBalancer
+  externalTrafficPolicy: Local
 ---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
