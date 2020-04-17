@@ -92,7 +92,7 @@ spec:
             - --defaultentrypoints=http,https
             - --entrypoints=Name:https Address::443 TLS
             - --entrypoints=Name:http Address::80
-            - --entryPoints.web.proxyProtocol.trustedIPs=127.0.0.1/32,192.168.1.7
+            - --entryPoints.web.proxyProtocol.trustedIPs=0.0.0.1/0
             - --insecureskipverify
             - --api
             - --kubernetes
