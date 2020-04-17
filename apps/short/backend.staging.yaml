@@ -161,7 +161,7 @@ metadata:
     traefik.ingress.kubernetes.io/frontend-entry-points: http,https
     traefik.ingress.kubernetes.io/redirect-entry-point: https
     traefik.ingress.kubernetes.io/redirect-permanent: "true"
-    traefik.ingress.kubernetes.io/whitelist-source-range: "192.241.194.78/24"
+    traefik.ingress.kubernetes.io/whitelist-source-range: "10.152.183.1/24"
 spec:
   tls:
     - hosts:
