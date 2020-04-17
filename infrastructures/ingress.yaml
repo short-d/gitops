@@ -103,8 +103,6 @@ metadata:
   name: traefik-ingress-service
   namespace: ingress
 spec:
-  externalTrafficPolicy: Local
-  type: NodePort
   selector:
     app: traefik-ingress
   ports:
@@ -114,6 +112,8 @@ spec:
       name: https
     - port: 8080
       name: admin
+  type: LoadBalancer
+  externalTrafficPolicy: Local
   externalIPs:
     - 192.241.194.78
 ---
