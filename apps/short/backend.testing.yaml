@@ -124,6 +124,16 @@ spec:
                 secretKeyRef:
                   name: short
                   key: datadog-api-key
+            - name: SEGMENT_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: short
+                  key: segment-api-key
+            - name: IP_STACK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: short
+                  key: ipstack-api-key
       restartPolicy: Always
 ---
 apiVersion: v1
