@@ -95,7 +95,7 @@ spec:
             - --insecureskipverify
             - --api
             - --kubernetes
-            - --logLevel=INFO
+            - --logLevel=DEBUG
 ---
 kind: Service
 apiVersion: v1
