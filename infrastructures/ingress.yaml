@@ -103,7 +103,7 @@ metadata:
   name: traefik-ingress-service
   namespace: ingress
   annotations:
-    service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
+    ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
 spec:
   selector:
     app: traefik-ingress
