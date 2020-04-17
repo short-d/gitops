@@ -112,8 +112,7 @@ spec:
       name: https
     - port: 8080
       name: admin
-  type: LoadBalancer
-  externalTrafficPolicy: Local
+  type: NodePort
   externalIPs:
     - 192.241.194.78
 ---
