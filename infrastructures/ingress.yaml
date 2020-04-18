@@ -113,6 +113,7 @@ spec:
     - port: 8080
       name: admin
   type: NodePort
+  externalTrafficPolicy: Local
   externalIPs:
     - 192.241.194.78
 ---
