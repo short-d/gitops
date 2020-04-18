@@ -1,66 +1,6 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: small-1
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 800Mi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/k8s/volumes/small-1"
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: small-2
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 800Mi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/k8s/volumes/small-2"
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: medium-1
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/k8s/volumes/medium-1"
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: medium-2
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/k8s/volumes/medium-2"
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
   name: postgres
   labels:
     type: local
