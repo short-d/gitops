@@ -113,6 +113,8 @@ spec:
     - port: 8080
       name: admin
   type: NodePort
+  externalIPs:
+    - 192.241.194.78
 ---
 apiVersion: v1
 kind: Service
