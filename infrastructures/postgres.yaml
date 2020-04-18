@@ -76,5 +76,3 @@ spec:
       port: 7400
       targetPort: 5432
   type: NodePort
-  externalIPs:
-    - 192.241.194.78
