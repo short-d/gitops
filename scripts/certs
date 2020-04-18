@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-certbot-auto certonly \
+certbot certonly \
   --server https://acme-v02.api.letsencrypt.org/directory \
   --preferred-challenges dns \
   -d '*.short-d.com' \
