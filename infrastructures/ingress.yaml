@@ -90,8 +90,8 @@ spec:
                 - NET_BIND_SERVICE
           args:
             - --defaultentrypoints=http,https
-            - --entrypoints=Name:https Address::443 TLS
-            - --entrypoints=Name:http Address::80
+            - --entrypoints=Name:https Address::443 TLS ProxyProtocol.Insecure:true
+            - --entrypoints=Name:http Address::80 ProxyProtocol.Insecure:true
             - --insecureskipverify
             - ProxyProtocol.Insecure:true
             - --api
