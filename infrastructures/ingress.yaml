@@ -73,7 +73,7 @@ spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
       containers:
-        - image: traefik:v1.7.24
+        - image: traefik:v1.7.24-alpine
           name: traefik-ingress
           ports:
             - name: http
@@ -93,6 +93,7 @@ spec:
             - --entrypoints=Name:https Address::443 TLS
             - --entrypoints=Name:http Address::80
             - --insecureskipverify
+            - ProxyProtocol.Insecure:true
             - --api
             - --kubernetes
             - --logLevel=INFO
@@ -102,6 +103,8 @@ apiVersion: v1
 metadata:
   name: traefik-ingress-service
   namespace: ingress
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
 spec:
   selector:
     app: traefik-ingress
