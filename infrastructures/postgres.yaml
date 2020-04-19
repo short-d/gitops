@@ -11,12 +11,12 @@ metadata:
   labels:
     app: postgres
 spec:
-  storageClassName: manual
+  storageClassName: do-block-storage
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 15G
+      storage: 15Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -75,6 +75,4 @@ spec:
       protocol: TCP
       port: 7400
       targetPort: 5432
-  type: NodePort
-  externalIPs:
-    - 192.241.194.30
+  type: LoadBalancer
