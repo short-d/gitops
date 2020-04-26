@@ -68,9 +68,9 @@ spec:
             secretName: short-d.com-tls
             items:
               - key: tls.crt
-                path: tls.crt
+                path: server.crt
               - key: tls.key
-                path: tls.key
+                path: server.key
 ---
 apiVersion: v1
 kind: Service
