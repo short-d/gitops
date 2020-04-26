@@ -58,7 +58,7 @@ spec:
             - mountPath: /var/lib/postgresql/data
               name: data
             - name: certs
-              mountPath: /var/lib/postgresql/data/certs
+              mountPath: /var/lib/postgresql/certs
       volumes:
         - name: data
           persistentVolumeClaim:
