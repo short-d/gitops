@@ -59,7 +59,6 @@ spec:
               name: data
             - name: certs
               mountPath: /var/lib/postgresql/data/certs
-              readOnly: true
       volumes:
         - name: data
           persistentVolumeClaim:
