@@ -35,9 +35,13 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:12.1
+          image: postgres:12.2-alpine
           ports:
             - containerPort: 5432
+          args:
+            - -c ssl=on
+            - -c ssl_cert_file=/var/lib/postgresql/certs/server.crt
+            - -c ssl_key_file=/var/lib/postgresql/certs/server.key
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -57,10 +61,20 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: data
+            - name: certs
+              mountPath: /var/lib/postgresql/certs
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: postgres
+        - name: certs
+          secret:
+            secretName: short-d.com-tls
+            items:
+              - key: tls.crt
+                path: server.crt
+              - key: tls.key
+                path: server.key
 ---
 apiVersion: v1
 kind: Service
