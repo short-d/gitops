@@ -67,9 +67,9 @@ spec:
             - name: certs
               mountPath: /var/lib/postgresql/certs
       securityContext:
-        runAsUser: 999
-        runAsGroup: 999
-        fsGroup: 999
+        runAsUser: 70
+        runAsGroup: 70
+        fsGroup: 70
       volumes:
         - name: data
           persistentVolumeClaim:
