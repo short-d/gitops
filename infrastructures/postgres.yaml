@@ -69,7 +69,7 @@ spec:
       securityContext:
         runAsUser: 70
         runAsGroup: 70
-        fsGroup: 70
+        fsGroup: 999
       volumes:
         - name: data
           persistentVolumeClaim:
