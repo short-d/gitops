@@ -134,6 +134,11 @@ spec:
                 secretKeyRef:
                   name: short
                   key: ipstack-api-key
+            - name: GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: short
+                  key: google-api-key
       restartPolicy: Always
 ---
 apiVersion: v1
