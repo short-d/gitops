@@ -37,8 +37,6 @@ spec:
             - --
             - ./build/app
             - start
-            - --migration
-            - app/adapter/db/migration
           env:
             - name: ENV
               value: production
