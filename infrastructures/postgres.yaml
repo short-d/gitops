@@ -42,9 +42,9 @@ spec:
             - -c
             - ssl=on
             - -c
-            - ssl_cert_file=/var/lib/postgresql/certs/server.crt
+            - ssl_cert_file=/var/lib/ssl/certs/server.crt
             - -c
-            - ssl_key_file=/var/lib/postgresql/certs/server.key
+            - ssl_key_file=/var/lib/ssl/certs/server.key
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -62,14 +62,14 @@ spec:
                   name: postgres
                   key: db-name
           volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: data
+            - name: data
+              mountPath: /var/lib/postgresql/data
             - name: certs
-              mountPath: /var/lib/postgresql/certs
+              mountPath: /var/lib/ssl/certs
       securityContext:
-        runAsUser: 70
+        runAsUser: 0
         runAsGroup: 70
-        fsGroup: 999
+        fsGroup: 70
       volumes:
         - name: data
           persistentVolumeClaim:
