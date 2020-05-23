@@ -195,5 +195,5 @@ spec:
         paths:
           - backend:
               serviceName: short-backend
-              servicePort: grpc
+              servicePort: 8081
 
