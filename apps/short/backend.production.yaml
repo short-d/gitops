@@ -174,7 +174,6 @@ spec:
     - hosts:
         - api.short-d.com
         - gql.short-d.com
-        - grpc.short-d.com
       secretName: short-d.com-tls
   rules:
     - host: api.short-d.com
@@ -189,6 +188,18 @@ spec:
           - backend:
               serviceName: short-backend
               servicePort: graphql
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: production
+  name: short-backend-grpc
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/frontend-entry-points: http
+    ingress.kubernetes.io/protocol: h2c
+spec:
+  rules:
     - host: grpc.short-d.com
       http:
         paths:
