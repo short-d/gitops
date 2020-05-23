@@ -166,10 +166,10 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
     traefik.ingress.kubernetes.io/redirect-permanent: "true"
     traefik.ingress.kubernetes.io/whitelist-source-range: "0.0.0.0/0"
     ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
-    ingress.kubernetes.io/protocol: h2c
 spec:
   tls:
     - hosts:
@@ -189,10 +189,21 @@ spec:
           - backend:
               serviceName: short-backend
               servicePort: graphql
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: testing
+  name: short-backend-grpc
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/frontend-entry-points: http
+    ingress.kubernetes.io/protocol: h2c
+spec:
+  rules:
     - host: grpc-testing.short-d.com
       http:
         paths:
-          - backend:
-              serviceName: short-backend
-              servicePort: grpc
-
+            - backend:
+                serviceName: short-backend
+                servicePort: grpc
