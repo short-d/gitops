@@ -193,7 +193,7 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  namespace: staging
+  namespace: testing
   name: short-backend-grpc
   annotations:
     kubernetes.io/ingress.class: traefik
