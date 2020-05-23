@@ -80,6 +80,8 @@ spec:
               containerPort: 80
             - name: https
               containerPort: 443
+            - name: h2c
+              containerPort: 8081
             - name: admin
               containerPort: 8080
           securityContext:
@@ -113,6 +115,8 @@ spec:
       name: http
     - port: 443
       name: https
+    - port: 8081
+      name: h2c
     - port: 8080
       name: admin
   type: LoadBalancer
