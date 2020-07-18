@@ -29,6 +29,10 @@ spec:
             - containerPort: 80
             - containerPort: 8080
             - containerPort: 8081
+          volumeMounts:
+            - name: certs
+              mountPath: "/etc/certs"
+              readOnly: true
           args:
             - ./scripts/wait-for-it
             - -s
@@ -138,6 +142,23 @@ spec:
                 secretKeyRef:
                   name: short
                   key: google-api-key
+            - name: ENABLE_ENCRYPTION
+              value: "true"
+            - name: CERT_FILE_PATH
+              value: /etc/certs/tls.crt
+            - name: KEY_FILE_PATH
+              value: /etc/certs/tls.key
+            - name: GRPC_API_PORT
+              value: "8081"
+      volumes:
+        - name: certs
+          secret:
+            secretName: short-d.com-tls
+            items:
+              - key: tls.crt
+                path: tls.crt
+              - key: tls.key
+                path: tls.key
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -198,8 +219,12 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/frontend-entry-points: http
-    ingress.kubernetes.io/protocol: h2c
+    ingress.kubernetes.io/protocol: https
 spec:
+  tls:
+    - hosts:
+        - grpc-testing.short-d.com
+      secretName: short-d.com-tls4
   rules:
     - host: grpc-testing.short-d.com
       http:
