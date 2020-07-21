@@ -217,7 +217,7 @@ metadata:
   name: short-backend-grpc
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/frontend-entry-points: http
+    traefik.ingress.kubernetes.io/frontend-entry-points: https
     ingress.kubernetes.io/protocol: https
 spec:
   tls:
