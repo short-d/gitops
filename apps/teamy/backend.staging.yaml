@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: teamy-backend
-          image: byliuyang/teamy-backend-staging
+          image: shortorg/teamy-backend-staging
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
