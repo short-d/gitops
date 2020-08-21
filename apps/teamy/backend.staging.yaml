@@ -2,63 +2,70 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: staging
-  name: teamy-web
+  name: teamy-backend
   labels:
     app: teamy
-    tier: frontend
+    tier: backend
 spec:
   replicas: 1
   strategy:
     type: RollingUpdate
   revisionHistoryLimit: 3
-  template:
-    metadata:
-      name: teamy-web
-      labels:
-        app: teamy
-        tier: frontend
-    spec:
-      containers:
-        - name: teamy-web
-          image: shortorg/teamy-web-staging
-          imagePullPolicy: Always
-      restartPolicy: Always
   selector:
     matchLabels:
       app: teamy
-      tier: frontend
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: teamy
+        tier: backend
+    spec:
+      containers:
+        - name: teamy-backend
+          image: byliuyang/teamy-backend-staging
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          args:
+            - ./build/app
+      restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: staging
-  name: teamy-web
+  name: teamy-backend
 spec:
   selector:
     app: teamy
-    tier: frontend
+    tier: backend
   ports:
-    - port: 80
+    - name: graphql
+      port: 8080
+
 ---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   namespace: staging
-  name: teamy-web
+  name: teamy-backend
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/frontend-entry-points: http,https
     traefik.ingress.kubernetes.io/redirect-entry-point: https
     traefik.ingress.kubernetes.io/redirect-permanent: "true"
+    traefik.ingress.kubernetes.io/whitelist-source-range: "0.0.0.0/0"
+    ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
 spec:
   tls:
     - hosts:
-        - teamy-staging.short-d.com
+        - gql-teamy-staging.short-d.com
       secretName: short-d.com-tls
   rules:
-    - host: teamy-staging.short-d.com
+    - host: gql-teamy-staging.short-d.com
       http:
         paths:
           - backend:
-              serviceName: teamy-web
-              servicePort: 80
+              serviceName: teamy-backend
+              servicePort: graphql
