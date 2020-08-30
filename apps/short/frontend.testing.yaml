@@ -26,9 +26,9 @@ spec:
             - name: SHORT_RPC_API_HOST
               value: grpc-testing.short-d.com
             - name: SHORT_RPC_API_PORT
-              value: 443
+              value: "443"
             - name: HTTP_PORT
-              value: 80
+              value: "80"
       restartPolicy: Always
   selector:
     matchLabels:
